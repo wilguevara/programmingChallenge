@@ -28,7 +28,7 @@
       <br><br>
       <h1 class="header center orange-text">Calendar Assign</h1>
       <div class="row center">
-        <h5 class="header col s12 light">Oscar Wilfredo Rodriguez</h5>
+        <h5 class="header col s12 light">Prosoft</h5>
       </div>
       <div class="row center">
         <form class="col s12">
@@ -74,27 +74,44 @@
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-            <h5 class="center">Speeds up development</h5>
+            <h5 class="center">ToDo requirements</h5>
 
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+            <p class="light">
+              A list of any requirements you could not implement.
+              <ul>
+                <li>- Consuming the REST API for holidays</li>
+                <li>- Creating the list of calendars based on the days input</li>
+                <li>- Some invalid days</li>
+              </ul>
+            </p>
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
-            <h5 class="center">User Experience Focused</h5>
+            <h2 class="center light-blue-text"><i class="material-icons">clock</i></h2>
+            <h5 class="center">No time</h5>
 
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+            <p class="light">
+              Bugs you’ve identified but didn’t have time to fix.
+              <ul>
+                <li>- Cross domain requests, CORS when trying to extracting data from rest API</li>
+              </ul>
+            </p>
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-            <h5 class="center">Easy to work with</h5>
+            <h2 class="center light-blue-text"><i class="material-icons">clock</i></h2>
+            <h5 class="center">More time</h5>
 
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+            <p class="light">Things you would do if you had more time to complete the task.
+            <ul>
+              <li>- Create a best user experience and UI design</li>
+              <li>- Complete the cors errors, if i had access to the backend, set my app server IP in a whitelist or similar.</li>
+            </ul>
+            </p>
           </div>
         </div>
       </div>
@@ -106,35 +123,21 @@
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+          <h5 class="white-text">Profile</h5>
+          <p class="grey-text text-lighten-4">Oscar Wilfredo Rodriguez Guevara</p>
 
 
         </div>
         <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
+          
         </div>
         <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
+          
         </div>
       </div>
     </div>
     <div class="footer-copyright">
-      <div class="container">
-      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-      </div>
+      
     </div>
   </footer>
 
@@ -144,31 +147,30 @@
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
   <script type="text/javascript">
+
+    var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+
     $(document).ready(function(){
-      
-      var today = new Date();
-      $('#init_date').val('2016-03-01');
+      $('#init_date').val('2013-11-13');
 
       $('#init_date,#days_number,#country').on('change', function(e){
         e.preventDefault();
-        renderCalendar();
-      });
 
-      renderCalendar();
+        var initDate = new Date( $('#init_date').val() );
+        var daysNumber = parseInt($('#days_number').val(), 10);
+        var country = $.trim($('#country').val()).toString().toUpperCase();
+
+        renderCalendar(initDate, daysNumber, country);
+
+      });
 
     });
 
-    function renderCalendar (){
+    function renderCalendar (_date, pad, _country){
       console.log('Render Calendar FN');
+      console.log(_date);
 
-      var initDate = new Date( $.trim($('#init_date').val()) );
-      var daysNumber = parseInt($('#days_number').val(), 10);
-      var country = $.trim($('#country').val()).toString().toUpperCase();
-
-      console.log(initDate);
-      console.log(daysNumber);
-      console.log(country);
-
+      var todayNumber = _date.getDay();
       var theader =  '<thead>'+
                       '<tr>'+
                         '<th>Sun</th>'+
@@ -179,22 +181,74 @@
                         '<th>Fri</th>'+
                         '<th>Sat</th>'+
                       '</tr>'+
+                      '<tr>'+
+                        '<th colspan="7">'+ monthNames[_date.getMonth()] + ', ' + _date.getFullYear() +'</th>'+
+                      '</tr>'+
                     '<thead>';
       var tbody = '<tbody>';
 
-      for(var i = 0; i < 6 ; i++){
-        tbody += '<tr>';
-        for(var f = 0; f < 7; f++){
-          tbody += '<td>'+f+'</td>';
-        }
-        tbody += '</tr>';
-      }
+      //getting remote data
+      //getRemoteData(_date, _country, function(holidaysList){
 
-      tbody += '</tbody>';
+        //console.log( hollidaysList );
 
-      $('table').html(theader + tbody);
+          var counter = 1;
+          for(var i = 0; i < 6 ; i++){
+            tbody += '<tr>';
+
+            for(var f = 0; f < 7; f++){
+
+              if( counter > 31 || counter < _date.getDate() ){
+                //hidden days
+                tbody += '<td class="grey lighten-5">&nbsp;</td>';
+              }else if( counter == _date.getDate() ){
+                //selected day
+                tbody += '<td class="green darken-1">'+counter+'</td>';
+              }else if(f == 0 || f == 6){
+                //Weekends
+                tbody += '<td class="lime accent-1">'+ counter +'</td>';
+              /*}else if(    ){
+                //Hollidays
+                tbody += '<td class="orange darken-4">'+ counter +'</td>';
+              */}else{
+                //Weekdays
+                tbody += '<td class="green lighten-3">'+ counter +'</td>';
+              }
+              counter++;
+            }
+
+            tbody += '</tr>';
+
+          }
+
+          tbody += '</tbody>';
+
+          $('table').html(theader + tbody);
+      //});
 
 
+    }
+
+    //cpnsuming the REST Api
+    function getRemoteData(_month, _country, callback){
+        $.ajax({
+          url: "http://holidayapi.com/v1/holidays",
+          data: {
+            country: _country,
+            year: _month.getFullYear(),
+            month: _month.getMonth() + 1
+          },
+          success: function(response){
+            var data = response.holidays;
+            callback(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown){
+            console.log("status " + textStatus);
+            alert('ERROR requesting');
+            var data = [];
+            callback(data);
+          }
+        });
     }
 
   </script>
