@@ -28,12 +28,28 @@
       <br><br>
       <h1 class="header center orange-text">Calendar Assign</h1>
       <div class="row center">
-        <h5 class="header col s12 light">Osacr Wilfredo Rodriguez</h5>
+        <h5 class="header col s12 light">Oscar Wilfredo Rodriguez</h5>
       </div>
       <div class="row center">
-
-        <input type="date" id="date" name="date"/>
-        <input type="number" min="0" max="360"/>
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s4">
+              <i class="material-icons prefix">today</i>
+              <input id="init_date" type="date" class="validate">
+              <label for="init_date">Initial date:</label>
+            </div>
+            <div class="input-field col s4">
+              <i class="material-icons prefix">phone</i>
+              <input id="days_number" type="number" value="7" min="0" max="365" class="validate">
+              <label for="days_number">Number of days:</label>
+            </div>
+            <div class="input-field col s4">
+              <i class="material-icons prefix">location_on</i>
+              <input id="country" type="tel" class="validate" value="HN">
+              <label for="country">Country code:</label>
+            </div>
+          </div>
+        </form>
         <!--a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">Get Started</a-->
 
       </div>
@@ -44,6 +60,13 @@
 
 
   <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col s12">
+          <table class="centered"></table>
+        </div>
+      </div>
+    </div>
     <div class="section">
 
       <!--   Icon Section   -->
@@ -75,11 +98,6 @@
           </div>
         </div>
       </div>
-
-    </div>
-    <br><br>
-
-    <div class="section">
 
     </div>
   </div>
@@ -125,6 +143,61 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      
+      var today = new Date();
+      $('#init_date').val('2016-03-01');
+
+      $('#init_date,#days_number,#country').on('change', function(e){
+        e.preventDefault();
+        renderCalendar();
+      });
+
+      renderCalendar();
+
+    });
+
+    function renderCalendar (){
+      console.log('Render Calendar FN');
+
+      var initDate = new Date( $.trim($('#init_date').val()) );
+      var daysNumber = parseInt($('#days_number').val(), 10);
+      var country = $.trim($('#country').val()).toString().toUpperCase();
+
+      console.log(initDate);
+      console.log(daysNumber);
+      console.log(country);
+
+      var theader =  '<thead>'+
+                      '<tr>'+
+                        '<th>Sun</th>'+
+                        '<th>Mon</th>'+
+                        '<th>Tue</th>'+
+                        '<th>Wed</th>'+
+                        '<th>Thu</th>'+
+                        '<th>Fri</th>'+
+                        '<th>Sat</th>'+
+                      '</tr>'+
+                    '<thead>';
+      var tbody = '<tbody>';
+
+      for(var i = 0; i < 6 ; i++){
+        tbody += '<tr>';
+        for(var f = 0; f < 7; f++){
+          tbody += '<td>'+f+'</td>';
+        }
+        tbody += '</tr>';
+      }
+
+      tbody += '</tbody>';
+
+      $('table').html(theader + tbody);
+
+
+    }
+
+  </script>
 
   </body>
 </html>
